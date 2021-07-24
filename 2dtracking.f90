@@ -3,7 +3,7 @@ program main
     ! Todo - Declare variables at the end
     real, dimension(2) :: x_guess, x_value
     real :: mod_psi_infinite, psi_x_guess_real, psi_x_guess_img, psi_real, psi_img
-    real :: dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i, h, x, y, det
+    real :: dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i, h, x, y, det, w_ps
     logical :: NR_stop, should_stop
     real, dimension(2,2) :: j_inverse
     ! Calculation of mod_psi_infinite as p  1.00000012     -0.499999642 er root(rho_infinite/m)
@@ -16,7 +16,7 @@ program main
     x_guess(0) = 0.1
     x_guess(1) = 0.1
 
-    h = 0.01 ! a very small number
+    h = 0.1 ! a very small number
     
 
     NR_stop = .FALSE.
@@ -25,14 +25,10 @@ program main
         y = x_guess(1)
 
         dau_x_psi_r = (psi_real(x+h,y) - psi_real(x-h,y))/(2*h)
-        write(*,*) "dau_x_psi_r", dau_x_psi_r
         dau_x_psi_i = (psi_img(x+h,y) - psi_img(x-h,y))/(2*h)
-        write(*,*) "dau_x_psi_i", dau_x_psi_i
         dau_y_psi_r =  (psi_real(x,y+h) - psi_real(x,y-h))/(2*h)  
-        write(*,*) "dau_y_psi_r", dau_y_psi_r 
         dau_y_psi_i =  (psi_img(x,y+h) - psi_img(x,y-h))/(2*h)
-        write(*,*) "dau_y_psi_i", dau_y_psi_i
-
+        
         det = dau_x_psi_r*dau_y_psi_i - dau_x_psi_i*dau_y_psi_r
         j_inverse(1,1) = dau_y_psi_i/det
         j_inverse(1,2) = -dau_y_psi_r/det
@@ -47,7 +43,10 @@ program main
         x_value(0) = x_guess(0) - (j_inverse(1,1)*psi_x_guess_real + j_inverse(1,2)*psi_x_guess_img)
         x_value(1) = x_guess(1) - (j_inverse(2,1)*psi_x_guess_real + j_inverse(2,2)*psi_x_guess_img)
         
-        ! pseduo vortex -> calculate pseudo vorticity at point to check before stoping
+        ! TODO - pseduo vortex -> calculate pseudo vorticity at point to check before stoping
+        ! w_ps = h_bar * grad_psi_real * grad_psi_img (take h_bar = 1)
+        w_ps = dau_x_psi_r*dau_y_psi_i - dau_y_psi_r*dau_x_psi_i
+        write(*,*) "w_ps is", w_ps
     
         NR_stop = should_stop(x_value, mod_psi_infinite)
         write(*,*) "loop done"
@@ -72,7 +71,7 @@ logical function should_stop(x_guess, mod_psi_infinite)
     ! endif 
 
     ! Temporarily as m is unknown, the condition -> psi_real ~ 0, psi_img ~ 0
-    if(psi_real(x,y) <= 0.0001 .AND. psi_img(x,y) <= 0.0001) then
+    if(psi_real(x,y) <= 0.000001 .AND. psi_img(x,y) <= 0.000001) then
         found_vortex = .TRUE.
     endif
     
