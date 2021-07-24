@@ -1,8 +1,8 @@
 program main
     implicit none
-    real :: x
+    real :: x, helo
 
-    x = helo(10.34)
+    x = helo(10.34)/2
     write(*, *) "x is ", x
 end program main
 
