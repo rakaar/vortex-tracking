@@ -1,6 +1,10 @@
 program main
-do i = 1, 1
-     j = i*i
-     print *, "i = ", i, ", i^2 = ", j             
-  end do
+
+CHARACTER(100) :: x
+x = "img"
+write(*,*) x .eq. "img"
 end program main
+
+
+
+

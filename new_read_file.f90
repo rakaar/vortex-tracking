@@ -16,6 +16,14 @@ INTEGER:: ifile
 INTEGER:: cloop,cntfile
 INTEGER:: cxmin,cxmax,cymin,cymax,czmin,czmax
 INTEGER:: ip, order
+
+
+! 2d tracking 
+integer:: x_guess, y_guess, h, x, y
+logical :: NR_stop, should_stop
+
+real :: dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i, psi_part
+
 ! Some constants
 integer, parameter:: GP = KIND(0.0D0)
 real(kind=GP), parameter:: zero  = 0.0_GP
@@ -31,7 +39,6 @@ complex(kind=GP), parameter:: czero = CMPLX(0.0,0.0,KIND=GP)!complex(0.0_GP,0.0_
 complex(kind=GP), parameter:: zi    = CMPLX(0.0,1.0,KIND=GP)!complex(0.0_GP,1.0_GP)
 
 REAL(KIND=GP):: lengthx,lengthy,lengthz
-REAL(KIND=GP):: x,y,z
 REAL(KIND=GP):: dx,dy,dz
 REAL(KIND=GP):: du1,du2,du3
 REAL(KIND=GP):: su
@@ -105,11 +112,39 @@ ENDDO
 
 ENDDO
 
-write(*,*) psi
+!write(*,*) psi
 
 write(*,*) "testing --------------------------------------------------------->",psi(1,2)
+write(*,*) (ABS(psi(1,2)))**2
+write(*,*) real(psi(1,2))
+write(*,*) aimag(psi(1,2))
+
 write(*,*) "testing --------------------------------------------------------->",psi(256,256)
 write(*,*) "testing --------------------------------------------------------->",psi(100,120)
+
+write(*,*) "#################################################################################"
+
+
+! choose a random point
+x_guess = 25
+y_guess = 100
+
+h = 1
+
+NR_stop = .false.
+
+x = x_guess
+y = y_guess
+do while(NR_stop .eqv. .FALSE.)
+    ! do a limit wise proper differentiation
+    dau_x_psi_r = (psi_part(x,y,psi,"real") - psi_part(x-h,y,psi,"real"))/(2*h)
+    dau_x_psi_i = (psi_part(x,y,psi,"img") - psi_part(x-h,y,psi,"img"))/(2*h)
+    dau_y_psi_r =  (psi_part(x,y,psi,"real") - psi_part(x,y-h,psi,"real"))/(2*h)  
+    dau_y_psi_i =  (psi_part(x,y,psi,"img") - psi_part(x,y-h,psi,"img"))/(2*h)
+    
+    write(*,*) "dausssss",dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i
+    NR_stop = .true.
+enddo
 
 
 
@@ -117,3 +152,33 @@ DEALLOCATE(psi)
 DEALLOCATE(rho)
 
 END PROGRAM
+
+real function psi_part(x_cord, y_cord, complex_num, real_or_img)
+    integer, parameter:: GP = KIND(0.0D0)
+    COMPLEX(KIND=GP), DIMENSION(256,256):: complex_num
+    integer :: x_cord, y_cord, final_x, final_y
+    CHARACTER(100) :: real_or_img
+
+    final_x = x_cord
+    final_y = y_cord
+    
+    if(x_cord > 256) then
+        final_x = 256
+    else if (x_cord < 1) then
+        final_x = 1
+    endif
+
+    if(y_cord > 256) then
+        final_y = 256
+    else if (y_cord < 1) then
+        final_y = 1
+    endif
+
+    write(*,*) "final_x, final_y",final_x, final_y
+    if(real_or_img .eq. "real") then
+        psi_part = real(complex_num(final_x, final_y))
+    else
+        psi_part = aimag(complex_num(final_x, final_y))
+    endif
+    
+end function psi_part
