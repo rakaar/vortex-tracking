@@ -21,8 +21,8 @@ INTEGER:: ip, order
 ! 2d tracking 
 integer:: x_guess, y_guess, h, x, y
 logical :: NR_stop, should_stop
-
-real :: dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i, psi_part
+real :: dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i, psi_part,det
+real, dimension(2,2) :: j_inverse
 
 ! Some constants
 integer, parameter:: GP = KIND(0.0D0)
@@ -143,6 +143,18 @@ do while(NR_stop .eqv. .FALSE.)
     dau_y_psi_i =  (psi_part(x,y,psi,"img") - psi_part(x,y-h,psi,"img"))/(2*h)
     
     write(*,*) "dausssss",dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i
+
+    det = dau_x_psi_r*dau_y_psi_i - dau_x_psi_i*dau_y_psi_r
+    write(*,*) "det",det
+    
+    j_inverse(1,1) = dau_y_psi_i/det
+    j_inverse(1,2) = -dau_y_psi_r/det
+    j_inverse(2,1) = -dau_x_psi_i/det
+    j_inverse(2,2) = dau_x_psi_r/det
+
+    
+    write(*,*) "Jacobian Inverse in the loop is this ", j_inverse
+
     NR_stop = .true.
 enddo
 
