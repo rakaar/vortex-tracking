@@ -208,7 +208,7 @@ do while(NR_stop .eqv. .FALSE.)
     ! endif
 
     ! a simpler condition for now, till proper values of condensate, mass are known
-     if(ABS(psi(index_i, index_j))**2 <= 0.1) then
+     if(ABS(psi(x,y))**2 <= 0.1) then
         NR_stop = .true.   
     endif
 enddo
