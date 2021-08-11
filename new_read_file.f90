@@ -21,7 +21,7 @@ INTEGER:: ip, order
 ! 2d tracking 
 integer:: x_guess, y_guess, h, x, y
 logical :: NR_stop, should_stop
-real :: dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i, psi_part,det
+real :: dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i, psi_part,det, psi_x_guess_real, psi_x_guess_img
 real, dimension(2,2) :: j_inverse
 
 ! Some constants
@@ -138,6 +138,8 @@ y = y_guess
 do while(NR_stop .eqv. .FALSE.)
     ! do a limit wise proper differentiation
     ! 1 for real, 2 for imaginary
+    write(*,*) "start of loop-x,y", x,y
+    
     dau_x_psi_r = (psi_part(x+h,y,psi,1) - psi_part(x-h,y,psi,1))/(2*h)
     write(*,*) "dau_x_psi_r", dau_x_psi_r
     dau_x_psi_i = (psi_part(x+h,y,psi,2) - psi_part(x-h,y,psi,2))/(2*h)
@@ -155,15 +157,22 @@ do while(NR_stop .eqv. .FALSE.)
     write(*,*) "det1",dau_x_psi_r*dau_y_psi_i
     write(*,*) "det2",dau_x_psi_i*dau_y_psi_r
     write(*,*) "det",det
-    
+
     j_inverse(1,1) = dau_y_psi_i/det
     j_inverse(1,2) = -dau_y_psi_r/det
     j_inverse(2,1) = -dau_x_psi_i/det
     j_inverse(2,2) = dau_x_psi_r/det
 
-    
     write(*,*) "Jacobian Inverse in the loop is this ", j_inverse
 
+
+    psi_x_guess_real = psi_part(x,y,psi,1)
+    psi_x_guess_img = psi_part(x,y,psi,2)
+    x = x - (j_inverse(1,1)*psi_x_guess_real + j_inverse(1,2)*psi_x_guess_img)
+    y = y - (j_inverse(2,1)*psi_x_guess_real + j_inverse(2,2)*psi_x_guess_img)
+    write(*,*) "end of loop-x,y", x,y
+    
+    ! condition to stop
     NR_stop = .true.
 enddo
 
