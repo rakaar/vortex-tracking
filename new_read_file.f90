@@ -127,8 +127,8 @@ write(*,*) "####################################################################
 
 
 ! choose a random point
-x_guess = 200
-y_guess = 60
+x_guess = 170
+y_guess = 170
 
 h = 1
 
@@ -144,39 +144,39 @@ y = y_guess
 do while(NR_stop .eqv. .FALSE.)
     ! do a limit wise proper differentiation
     ! 1 for real, 2 for imaginary
-    write(*,*) "start of loop-x,y", x,y
+    write(*,*) "***start of loop-x,y", x,y
     
     dau_x_psi_r = (psi_part(x+h,y,psi,1) - psi_part(x-h,y,psi,1))/(2*h)
-    write(*,*) "dau_x_psi_r", dau_x_psi_r
+    ! write(*,*) "dau_x_psi_r", dau_x_psi_r
     dau_x_psi_i = (psi_part(x+h,y,psi,2) - psi_part(x-h,y,psi,2))/(2*h)
-    write(*,*) "dau_x_psi_i", dau_x_psi_i
+    ! write(*,*) "dau_x_psi_i", dau_x_psi_i
     
     dau_y_psi_r =  (psi_part(x,y+h,psi,1) - psi_part(x,y-h,psi,1))/(2*h)  
-    write(*,*) "dau_y_psi_r", dau_y_psi_r
+    ! write(*,*) "dau_y_psi_r", dau_y_psi_r
     
     dau_y_psi_i =  (psi_part(x,y+h,psi,2) - psi_part(x,y-h,psi,2))/(2*h)
-    write(*,*) "dau_y_psi_i", dau_y_psi_i
+    ! write(*,*) "dau_y_psi_i", dau_y_psi_i
     
-    write(*,*) "dausssss",dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i
+    ! write(*,*) "dausssss",dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i
 
     det = dau_x_psi_r*dau_y_psi_i - dau_x_psi_i*dau_y_psi_r
-    write(*,*) "det1",dau_x_psi_r*dau_y_psi_i
-    write(*,*) "det2",dau_x_psi_i*dau_y_psi_r
-    write(*,*) "det",det
+    ! write(*,*) "det1",dau_x_psi_r*dau_y_psi_i
+    ! write(*,*) "det2",dau_x_psi_i*dau_y_psi_r
+    ! write(*,*) "det",det
 
     j_inverse(1,1) = dau_y_psi_i/det
     j_inverse(1,2) = -dau_y_psi_r/det
     j_inverse(2,1) = -dau_x_psi_i/det
     j_inverse(2,2) = dau_x_psi_r/det
 
-    write(*,*) "Jacobian Inverse in the loop is this ", j_inverse
+    ! write(*,*) "Jacobian Inverse in the loop is this ", j_inverse
 
 
     psi_x_guess_real = psi_part(x,y,psi,1)
     psi_x_guess_img = psi_part(x,y,psi,2)
     x = x - (j_inverse(1,1)*psi_x_guess_real + j_inverse(1,2)*psi_x_guess_img)
     y = y - (j_inverse(2,1)*psi_x_guess_real + j_inverse(2,2)*psi_x_guess_img)
-    write(*,*) "end of loop-x,y", x,y
+    write(*,*) "***end of loop-x,y", x,y
 
     ! suppose at end of loop it jumps away
     if(x > 256) then
@@ -192,20 +192,25 @@ do while(NR_stop .eqv. .FALSE.)
     endif
 
    
-    write(*,*) ">>>>mod_psi",ABS(psi(x,y))
-    write(*,*) ">>>>delta*mod_psi_inf",delta*mod_psi_inf
+    write(*,*) ">>>>mod_psi",ABS(psi(x,y)**2)
+    call sleep(3)
+    ! write(*,*) ">>>>delta*mod_psi_inf",delta*mod_psi_inf
     
-    write(*,*) ">>>>>>>>>>>>>>>>>>>>>>>mod_psi - delta x mod_psi_inf",ABS(psi(x,y)) - delta*mod_psi_inf
+    ! write(*,*) ">>>>>>>>>>>>>>>>>>>>>>>mod_psi - delta x mod_psi_inf",ABS(psi(x,y)) - delta*mod_psi_inf
     
     
-    write(*,*) "w_ps", w_ps
+    ! write(*,*) "w_ps", w_ps
     ! w_ps = h_bar * grad_psi_real * grad_psi_img (take h_bar = 1)
     w_ps = dau_x_psi_r*dau_y_psi_i - dau_y_psi_r*dau_x_psi_i 
     ! condition to stop: mod_psi < delta x mod_psi_inf
-    if((ABS(psi(x,y)) - delta*mod_psi_inf <= 0) .and. w_ps /= 0) then
+    ! if((ABS(psi(x,y)) - delta*mod_psi_inf <= 0) .and. w_ps /= 0) then
+    !     NR_stop = .true.   
+    ! endif
+
+    ! a simpler condition for now, till proper values of condensate, mass are known
+     if(ABS(psi(index_i, index_j))**2 <= 0.1) then
         NR_stop = .true.   
     endif
-    
 enddo
 
 
@@ -235,8 +240,8 @@ real function psi_part(x_cord, y_cord, complex_num, real_or_img)
         final_y = 1
     endif
 
-    write(*,*) "final_x, final_y",final_x, final_y
-    write(*,*) real_or_img
+    ! write(*,*) "final_x, final_y",final_x, final_y
+    ! write(*,*) real_or_img
     if(real_or_img .eq. 1) then
         psi_part = real(complex_num(final_x, final_y))
     else
