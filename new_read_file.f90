@@ -126,8 +126,8 @@ write(*,*) "####################################################################
 
 
 ! choose a random point
-x_guess = 25
-y_guess = 100
+x_guess = 200
+y_guess = 180
 
 h = 1
 
@@ -137,14 +137,23 @@ x = x_guess
 y = y_guess
 do while(NR_stop .eqv. .FALSE.)
     ! do a limit wise proper differentiation
-    dau_x_psi_r = (psi_part(x,y,psi,"real") - psi_part(x-h,y,psi,"real"))/(2*h)
-    dau_x_psi_i = (psi_part(x,y,psi,"img") - psi_part(x-h,y,psi,"img"))/(2*h)
-    dau_y_psi_r =  (psi_part(x,y,psi,"real") - psi_part(x,y-h,psi,"real"))/(2*h)  
-    dau_y_psi_i =  (psi_part(x,y,psi,"img") - psi_part(x,y-h,psi,"img"))/(2*h)
+    ! 1 for real, 2 for imaginary
+    dau_x_psi_r = (psi_part(x+h,y,psi,1) - psi_part(x-h,y,psi,1))/(2*h)
+    write(*,*) "dau_x_psi_r", dau_x_psi_r
+    dau_x_psi_i = (psi_part(x+h,y,psi,2) - psi_part(x-h,y,psi,2))/(2*h)
+    write(*,*) "dau_x_psi_i", dau_x_psi_i
+    
+    dau_y_psi_r =  (psi_part(x,y+h,psi,1) - psi_part(x,y-h,psi,1))/(2*h)  
+    write(*,*) "dau_y_psi_r", dau_y_psi_r
+    
+    dau_y_psi_i =  (psi_part(x,y+h,psi,2) - psi_part(x,y-h,psi,2))/(2*h)
+    write(*,*) "dau_y_psi_i", dau_y_psi_i
     
     write(*,*) "dausssss",dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i
 
     det = dau_x_psi_r*dau_y_psi_i - dau_x_psi_i*dau_y_psi_r
+    write(*,*) "det1",dau_x_psi_r*dau_y_psi_i
+    write(*,*) "det2",dau_x_psi_i*dau_y_psi_r
     write(*,*) "det",det
     
     j_inverse(1,1) = dau_y_psi_i/det
@@ -168,9 +177,8 @@ END PROGRAM
 real function psi_part(x_cord, y_cord, complex_num, real_or_img)
     integer, parameter:: GP = KIND(0.0D0)
     COMPLEX(KIND=GP), DIMENSION(256,256):: complex_num
-    integer :: x_cord, y_cord, final_x, final_y
-    CHARACTER(100) :: real_or_img
-
+    integer :: x_cord, y_cord, final_x, final_y, real_or_img
+    
     final_x = x_cord
     final_y = y_cord
     
@@ -187,7 +195,8 @@ real function psi_part(x_cord, y_cord, complex_num, real_or_img)
     endif
 
     write(*,*) "final_x, final_y",final_x, final_y
-    if(real_or_img .eq. "real") then
+    write(*,*) real_or_img
+    if(real_or_img .eq. 1) then
         psi_part = real(complex_num(final_x, final_y))
     else
         psi_part = aimag(complex_num(final_x, final_y))
