@@ -22,6 +22,7 @@ INTEGER:: ip, order
 integer:: x_guess, y_guess, h, x, y
 logical :: NR_stop, should_stop
 real :: dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i, psi_part,det, psi_x_guess_real, psi_x_guess_img
+real :: condensate_density, mass_of_boson, mod_psi_inf, delta, w_ps
 real, dimension(2,2) :: j_inverse
 
 ! Some constants
@@ -127,11 +128,16 @@ write(*,*) "####################################################################
 
 ! choose a random point
 x_guess = 200
-y_guess = 180
+y_guess = 60
 
 h = 1
 
 NR_stop = .false.
+
+condensate_density = 1
+mass_of_boson = 4
+mod_psi_inf = (condensate_density/mass_of_boson)**0.5
+delta = 0.1
 
 x = x_guess
 y = y_guess
@@ -171,9 +177,35 @@ do while(NR_stop .eqv. .FALSE.)
     x = x - (j_inverse(1,1)*psi_x_guess_real + j_inverse(1,2)*psi_x_guess_img)
     y = y - (j_inverse(2,1)*psi_x_guess_real + j_inverse(2,2)*psi_x_guess_img)
     write(*,*) "end of loop-x,y", x,y
+
+    ! suppose at end of loop it jumps away
+    if(x > 256) then
+        x = 256
+    else if (x < 1) then
+        x = 1
+    endif
+
+    if(y > 256) then
+        y = 256
+    else if (y < 1) then
+        y = 1
+    endif
+
+   
+    write(*,*) ">>>>mod_psi",ABS(psi(x,y))
+    write(*,*) ">>>>delta*mod_psi_inf",delta*mod_psi_inf
     
-    ! condition to stop
-    NR_stop = .true.
+    write(*,*) ">>>>>>>>>>>>>>>>>>>>>>>mod_psi - delta x mod_psi_inf",ABS(psi(x,y)) - delta*mod_psi_inf
+    
+    
+    write(*,*) "w_ps", w_ps
+    ! w_ps = h_bar * grad_psi_real * grad_psi_img (take h_bar = 1)
+    w_ps = dau_x_psi_r*dau_y_psi_i - dau_y_psi_r*dau_x_psi_i 
+    ! condition to stop: mod_psi < delta x mod_psi_inf
+    if((ABS(psi(x,y)) - delta*mod_psi_inf <= 0) .and. w_ps /= 0) then
+        NR_stop = .true.   
+    endif
+    
 enddo
 
 
