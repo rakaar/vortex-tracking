@@ -2,20 +2,10 @@ PROGRAM rho_vzu
 
 IMPLICIT NONE
 
-INTEGER(KIND=8) :: rec_len
-INTEGER:: Nx,Ny,Nz
-INTEGER:: Nxh,Nyh,Nzh
-INTEGER:: Nxhp,Nyhp,Nzhp
-INTEGER:: Nxpp,Nypp,Nzpp
-INTEGER:: nshell
-INTEGER:: ios
-INTEGER:: i1,i2,i3,ic1,ic2,ic3,cstep
-INTEGER:: ix,iy,iz,ir
-INTEGER:: factor1,factor2
-INTEGER:: ifile
-INTEGER:: cloop,cntfile
-INTEGER:: cxmin,cxmax,cymin,cymax,czmin,czmax
-INTEGER:: ip, order
+integer:: Nx,Ny,Nz
+integer:: ios
+integer:: i1,i2,i3
+integer:: ifile
 
 
 ! 2d tracking 
@@ -60,13 +50,6 @@ INTEGER:: i2_loc,i3_loc,myrank
 Nx = 256
 Ny = 256
 
-Nxh = Nx/2
-Nyh = Ny/2
-
-Nxhp = Nx/2+1
-Nyhp = Ny/2+1
-Nxpp = Nx+2
-Nypp = Ny+2
 
 lengthx = two*pi
 lengthy = two*pi
