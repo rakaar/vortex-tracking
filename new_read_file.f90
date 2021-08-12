@@ -2,8 +2,7 @@ PROGRAM rho_vzu
 
 IMPLICIT NONE
 
-! Reading psi
-integer:: Nx,Ny,Nz
+integer:: Nx,Ny
 integer:: ios
 integer:: i1,i2,i3
 integer:: ifile
@@ -18,59 +17,49 @@ real, dimension(2,2) :: j_inverse
 ! Some constants
 integer, parameter:: GP = KIND(0.0D0)
 
+! Reading psi
 complex(KIND=GP), ALLOCATABLE, DIMENSION(:,:):: psi
-
 integer:: r_iopoint
 real(KIND=GP):: r_time,r_dt
-
 character(100)::fnn,prcjj
 integer:: filen,jj
 
 Nx = 256
 Ny = 256
 
-
 filen = 1
 
-ALLOCATE(psi(1:Nx,1:Ny))
+allocate(psi(1:Nx,1:Ny))
 
 
+do ifile=1,filen
+    write(fnn,'(i8)') ifile
+    write(*,*) "fnn is ",fnn
 
-DO ifile=1,filen
+    do i3 = 1,4
+        jj = (i3-1)*(Nx/4)+1
+        write(prcjj,'(i8)') i3
 
-WRITE(fnn,'(i8)') ifile
-write(*,*) "fnn is ",fnn
+        write(*,*) 'wf'//TRIM(ADJUSTL(fnn))//'p'//TRIM(ADJUSTL(prcjj))//'.dat'
+        open(UNIT=11,FILE='wf'//TRIM(ADJUSTL(fnn))//'p'//TRIM(ADJUSTL(prcjj))//'.dat',&
+        FORM='UNFORMATTED', status='OLD', IOSTAT=ios)
 
-DO i3 = 1,4
-jj = (i3-1)*(Nx/4)+1
+        READ(11) r_iopoint,r_time,r_dt
+        do i2 = jj,i3*(Nx/4)
+            READ(11) (psi(i1,i2),i1=1,Nx)
+        enddo
 
-WRITE(prcjj,'(i8)') i3
-
-write(*,*) 'wf'//TRIM(ADJUSTL(fnn))//'p'//TRIM(ADJUSTL(prcjj))//'.dat'
-OPEN(UNIT=11,FILE='wf'//TRIM(ADJUSTL(fnn))//'p'//TRIM(ADJUSTL(prcjj))//'.dat',&
-FORM='UNFORMATTED', status='OLD', IOSTAT=ios)
-
-READ(11) r_iopoint,r_time,r_dt
-DO i2 = jj,i3*(Nx/4)
-!print*,i2
-READ(11) (psi(i1,i2),i1=1,Nx)
-ENDDO
-
-CLOSE(11)
-
-ENDDO
-
-
-
-ENDDO
+        close(11)
+    enddo
+enddo
 
 !write(*,*) psi
 
+write(*,*) "#################################################################################"
 write(*,*) "testing --------------------------------------------------------->",psi(1,2)
 write(*,*) (ABS(psi(1,2)))**2
 write(*,*) real(psi(1,2))
 write(*,*) aimag(psi(1,2))
-
 write(*,*) "testing --------------------------------------------------------->",psi(256,256)
 write(*,*) "testing --------------------------------------------------------->",psi(100,120)
 
@@ -85,6 +74,7 @@ h = 1
 
 NR_stop = .false.
 
+! for stopping condition, TODO: Need to know proper values
 condensate_density = 1
 mass_of_boson = 4
 mod_psi_inf = (condensate_density/mass_of_boson)**0.5
@@ -93,9 +83,7 @@ delta = 0.1
 x = x_guess
 y = y_guess
 do while(NR_stop .eqv. .FALSE.)
-    ! do a limit wise proper differentiation
     write(*,*) "***start of loop-x,y", x,y
-    
     ! 1 for real, 2 for imaginary
     dau_x_psi_r = (psi_part(x+h,y,psi,1) - psi_part(x-h,y,psi,1))/(2*h)
     ! write(*,*) "dau_x_psi_r", dau_x_psi_r
@@ -166,7 +154,7 @@ enddo
 
 
 
-DEALLOCATE(psi)
+deallocate(psi)
 
 END PROGRAM
 
