@@ -127,8 +127,8 @@ write(*,*) "####################################################################
 
 
 ! choose a random point
-x_guess = 170
-y_guess = 170
+x_guess = 95
+y_guess =  95
 
 h = 1
 
@@ -143,9 +143,9 @@ x = x_guess
 y = y_guess
 do while(NR_stop .eqv. .FALSE.)
     ! do a limit wise proper differentiation
-    ! 1 for real, 2 for imaginary
     write(*,*) "***start of loop-x,y", x,y
     
+    ! 1 for real, 2 for imaginary
     dau_x_psi_r = (psi_part(x+h,y,psi,1) - psi_part(x-h,y,psi,1))/(2*h)
     ! write(*,*) "dau_x_psi_r", dau_x_psi_r
     dau_x_psi_i = (psi_part(x+h,y,psi,2) - psi_part(x-h,y,psi,2))/(2*h)
@@ -193,7 +193,7 @@ do while(NR_stop .eqv. .FALSE.)
 
    
     write(*,*) ">>>>mod_psi",ABS(psi(x,y)**2)
-    call sleep(3)
+    call sleep(1)
     ! write(*,*) ">>>>delta*mod_psi_inf",delta*mod_psi_inf
     
     ! write(*,*) ">>>>>>>>>>>>>>>>>>>>>>>mod_psi - delta x mod_psi_inf",ABS(psi(x,y)) - delta*mod_psi_inf
