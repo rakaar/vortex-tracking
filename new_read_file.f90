@@ -17,17 +17,8 @@ real, dimension(2,2) :: j_inverse
 
 ! Some constants
 integer, parameter:: GP = KIND(0.0D0)
-real(kind=GP), parameter:: zero  = 0.0_GP
-real(kind=GP), parameter:: one   = 1.0_GP
-real(kind=GP), parameter:: mone  = -1.0_GP
 real(kind=GP), parameter:: pi    = 4.0_GP*atan(1.0_GP)
-real(kind=GP), parameter:: half  = 1.0_GP/2.0_GP
-real(kind=GP), parameter:: oney4 = 1.0_GP/4.0_GP
 real(kind=GP), parameter:: two   = 2.0_GP
-real(kind=GP), parameter:: oney3 = 1.0_GP/3.0_GP 
-real(kind=GP), parameter:: oney6 = 1.0_GP/6.0_GP
-complex(kind=GP), parameter:: czero = CMPLX(0.0,0.0,KIND=GP)!complex(0.0_GP,0.0_GP)
-complex(kind=GP), parameter:: zi    = CMPLX(0.0,1.0,KIND=GP)!complex(0.0_GP,1.0_GP)
 
 REAL(KIND=GP):: lengthx,lengthy,lengthz
 REAL(KIND=GP):: dx,dy,dz
