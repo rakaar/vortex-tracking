@@ -17,11 +17,7 @@ real, dimension(2,2) :: j_inverse
 
 ! Some constants
 integer, parameter:: GP = KIND(0.0D0)
-real(kind=GP), parameter:: pi    = 4.0_GP*atan(1.0_GP)
-real(kind=GP), parameter:: two   = 2.0_GP
 
-REAL(KIND=GP):: lengthx,lengthy,lengthz
-REAL(KIND=GP):: dx,dy,dz
 REAL(KIND=GP):: du1,du2,du3
 REAL(KIND=GP):: su
 REAL(KIND=GP):: rs
@@ -41,12 +37,6 @@ INTEGER:: i2_loc,i3_loc,myrank
 Nx = 256
 Ny = 256
 
-
-lengthx = two*pi
-lengthy = two*pi
-
-dx = lengthx/Nx
-dy = lengthy/Ny
 
 
 nsplit_orignal = 4
