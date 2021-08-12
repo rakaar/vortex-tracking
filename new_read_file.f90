@@ -2,11 +2,11 @@ PROGRAM rho_vzu
 
 IMPLICIT NONE
 
+! Reading psi
 integer:: Nx,Ny,Nz
 integer:: ios
 integer:: i1,i2,i3
 integer:: ifile
-
 
 ! 2d tracking 
 integer:: x_guess, y_guess, h, x, y
@@ -18,10 +18,6 @@ real, dimension(2,2) :: j_inverse
 ! Some constants
 integer, parameter:: GP = KIND(0.0D0)
 
-REAL(KIND=GP):: du1,du2,du3
-REAL(KIND=GP):: su
-REAL(KIND=GP):: rs
-REAL(KIND=GP):: k0,a,b,c
 COMPLEX(KIND=GP), ALLOCATABLE, DIMENSION(:,:):: psi
 REAL(KIND=GP), ALLOCATABLE, DIMENSION(:,:):: rho
 !REAL*4, ALLOCATABLE, DIMENSION(:,:,:):: rho
