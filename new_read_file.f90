@@ -24,18 +24,13 @@ INTEGER:: r_iopoint
 REAL(KIND=GP):: r_time,r_dt
 
 CHARACTER(100)::fnn,prcjj
-INTEGER:: filen,nregrpfile,ii,jj,kk,nplnperproc_orignal
-INTEGER:: nsplit_orignal,nsplit_current
-INTEGER:: i2_loc,i3_loc,myrank
+INTEGER:: filen,jj
 
 Nx = 256
 Ny = 256
 
 
 
-nsplit_orignal = 4
-nsplit_current = 1 
-myrank = 0
 filen = 1
 
 ALLOCATE(psi(1:Nx,1:Ny))
