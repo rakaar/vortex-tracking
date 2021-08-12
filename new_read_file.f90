@@ -19,8 +19,6 @@ real, dimension(2,2) :: j_inverse
 integer, parameter:: GP = KIND(0.0D0)
 
 COMPLEX(KIND=GP), ALLOCATABLE, DIMENSION(:,:):: psi
-REAL(KIND=GP), ALLOCATABLE, DIMENSION(:,:):: rho
-!REAL*4, ALLOCATABLE, DIMENSION(:,:,:):: rho
 
 INTEGER:: r_iopoint
 REAL(KIND=GP):: r_time,r_dt
@@ -41,7 +39,6 @@ myrank = 0
 filen = 1
 
 ALLOCATE(psi(1:Nx,1:Ny))
-ALLOCATE(rho(1:Nx,1:Ny))
 
 
 
@@ -176,7 +173,6 @@ enddo
 
 
 DEALLOCATE(psi)
-DEALLOCATE(rho)
 
 END PROGRAM
 
