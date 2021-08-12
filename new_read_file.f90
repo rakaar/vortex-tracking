@@ -18,17 +18,16 @@ real, dimension(2,2) :: j_inverse
 ! Some constants
 integer, parameter:: GP = KIND(0.0D0)
 
-COMPLEX(KIND=GP), ALLOCATABLE, DIMENSION(:,:):: psi
+complex(KIND=GP), ALLOCATABLE, DIMENSION(:,:):: psi
 
-INTEGER:: r_iopoint
-REAL(KIND=GP):: r_time,r_dt
+integer:: r_iopoint
+real(KIND=GP):: r_time,r_dt
 
-CHARACTER(100)::fnn,prcjj
-INTEGER:: filen,jj
+character(100)::fnn,prcjj
+integer:: filen,jj
 
 Nx = 256
 Ny = 256
-
 
 
 filen = 1
