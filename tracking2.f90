@@ -51,7 +51,7 @@ INTEGER:: filen,nregrpfile,ii,jj,kk,nplnperproc_orignal
 INTEGER:: nsplit_orignal,nsplit_current
 INTEGER:: i2_loc,i3_loc,myrank
 integer:: x,y,z,h, length_of_below_threshold
-real :: w_ps, dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i,psi_part, max_psi_square, threshold
+real :: w_ps, dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i,psi_part, max_psi_square, threshold,phase_grad
 integer, dimension(256,2) :: below_threshold_pts
 
 
@@ -138,6 +138,28 @@ DEALLOCATE(psi)
 DEALLOCATE(rho)
 
 END PROGRAM
+
+real function phase_grad(x_cord, y_cord, complex_num)
+    ! TODO: Need to figure out how to calculate phase gradient
+    integer, parameter:: GP = KIND(0.0D0)
+    COMPLEX(KIND=GP), DIMENSION(256,256):: complex_num
+    integer :: x_cord, y_cord, final_x, final_y
+    
+
+    if(x_cord >= 256 .or. x_cord <=1  .or. y_cord >= 256 .or. y_cord <= 1) then
+       phase_grad = 10000000
+    endif
+
+    ! phase_grad =  &
+    !                   &
+    !                   &
+    !                   &
+    !                   & 
+
+    phase_grad = 0.1111 ! temp, wil remove it
+   
+
+end function phase_grad
 
 real function psi_part(x_cord, y_cord, complex_num, real_or_img)
     integer, parameter:: GP = KIND(0.0D0)
