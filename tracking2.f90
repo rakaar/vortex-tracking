@@ -50,8 +50,8 @@ CHARACTER(100)::fnn,prcjj
 INTEGER:: filen,nregrpfile,ii,jj,kk,nplnperproc_orignal
 INTEGER:: nsplit_orignal,nsplit_current
 INTEGER:: i2_loc,i3_loc,myrank
-integer:: x,y,z,h, length_of_below_threshold
-real :: w_ps, dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i,psi_part, max_psi_square, threshold,phase_grad
+integer:: x,y,z,h, length_of_below_threshold, phase_grad_floored
+real :: w_ps, dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i,psi_part, max_psi_square, threshold,find_phase_grad, phase_grad
 integer, dimension(256,2) :: below_threshold_pts
 
 
@@ -128,7 +128,15 @@ do index_i = 1,Nx
     do index_j = 1,Ny
         if(ABS(psi(index_i, index_j))**2 - max_psi_square*threshold < 0) then
             write(*,*) "i, j", index_i, index_j
-            write(*,*) ABS(psi(index_i, index_j))**2
+            write(*,*) "psi^2",ABS(psi(index_i, index_j))**2
+            write(*, *) "phase Grad",find_phase_grad(index_i, index_j, psi)/pi  ! divide by pi to check whether its integral multiples of pi or not
+            
+            ! check if phase grad is integer or not
+            ! phase_grad_floored = floor(phase_grad(index_i, index_j, psi)/pi)
+            ! if(phase_grad_floored - ) then
+
+            ! endif
+            
         endif
     enddo
 enddo
@@ -139,7 +147,7 @@ DEALLOCATE(rho)
 
 END PROGRAM
 
-real function phase_grad(x_cord, y_cord, complex_num)
+real function find_phase_grad(x_cord, y_cord, complex_num)
     ! TODO: Need to figure out how to calculate phase gradient
     integer, parameter:: GP = KIND(0.0D0)
     COMPLEX(KIND=GP), DIMENSION(256,256):: complex_num
@@ -147,19 +155,21 @@ real function phase_grad(x_cord, y_cord, complex_num)
     
 
     if(x_cord >= 256 .or. x_cord <=1  .or. y_cord >= 256 .or. y_cord <= 1) then
-       phase_grad = 10000000
+       find_phase_grad = 10000000
     endif
 
-    ! phase_grad =  &
-    !                   &
-    !                   &
-    !                   &
-    !                   & 
+  
+    find_phase_grad =  atan(psi_part(x_cord+1,y_cord,complex_num,2)/psi_part(x_cord+1,y_cord,complex_num,1)) + &
+                  atan(psi_part(x_cord+1,y_cord+1,complex_num,2)/psi_part(x_cord+1,y_cord+1,complex_num,1)) + &
+                  atan(psi_part(x_cord,y_cord+1,complex_num,2)/psi_part(x_cord,y_cord+1,complex_num,1)) + &
+                  atan(psi_part(x_cord-1,y_cord+1,complex_num,2)/psi_part(x_cord-1,y_cord+1,complex_num,1)) + &
+                  atan(psi_part(x_cord-1,y_cord,complex_num,2)/psi_part(x_cord-1,y_cord,complex_num,1)) + &
+                  atan(psi_part(x_cord-1,y_cord-1,complex_num,2)/psi_part(x_cord-1,y_cord-1,complex_num,1)) + &
+                  atan(psi_part(x_cord,y_cord-1,complex_num,2)/psi_part(x_cord,y_cord-1,complex_num,1)) + &
+                  atan(psi_part(x_cord+1,y_cord-1,complex_num,2)/psi_part(x_cord+1,y_cord-1,complex_num,1))
 
-    phase_grad = 0.1111 ! temp, wil remove it
-   
 
-end function phase_grad
+end function find_phase_grad
 
 real function psi_part(x_cord, y_cord, complex_num, real_or_img)
     integer, parameter:: GP = KIND(0.0D0)
