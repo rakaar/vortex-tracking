@@ -52,6 +52,7 @@ INTEGER:: nsplit_orignal,nsplit_current
 INTEGER:: i2_loc,i3_loc,myrank
 integer:: x,y,z,h, length_of_below_threshold, phase_grad_floored
 real :: w_ps, dau_x_psi_r, dau_x_psi_i, dau_y_psi_r, dau_y_psi_i,psi_part, max_psi_square, threshold,find_phase_grad, phase_grad
+real :: integer_check_diff
 integer, dimension(256,2) :: below_threshold_pts
 
 
@@ -127,15 +128,19 @@ threshold = 0.15! as per paper it is 0.15
 do index_i = 1,Nx
     do index_j = 1,Ny
         if(ABS(psi(index_i, index_j))**2 - max_psi_square*threshold < 0) then
-            write(*,*) "i, j", index_i, index_j
-            write(*,*) "psi^2",ABS(psi(index_i, index_j))**2
-            write(*, *) "phase Grad",find_phase_grad(index_i, index_j, psi)/pi  ! divide by pi to check whether its integral multiples of pi or not
             
             ! check if phase grad is integer or not
-            ! phase_grad_floored = floor(phase_grad(index_i, index_j, psi)/pi)
-            ! if(phase_grad_floored - ) then
-
-            ! endif
+            phase_grad = find_phase_grad(index_i, index_j, psi)/2*pi ! divide by pi to check whether its integral multiples of pi or not
+            phase_grad_floored = floor(phase_grad)
+            integer_check_diff = phase_grad - phase_grad_floored
+            if(integer_check_diff < 0.01 .OR. integer_check_diff > 0.99) then
+                write(*,*) "i, j", index_i, index_j
+                write(*,*) "psi^2",ABS(psi(index_i, index_j))**2
+            
+                write(*, *) "this might be vortex"
+                write(*,*) "grad", phase_grad
+                write(*,*) "------------------------------"
+            endif
             
         endif
     enddo
@@ -155,7 +160,7 @@ real function find_phase_grad(x_cord, y_cord, complex_num)
     
 
     if(x_cord >= 256 .or. x_cord <=1  .or. y_cord >= 256 .or. y_cord <= 1) then
-       find_phase_grad = 10000000
+       find_phase_grad = 10000000 ! we can't have vortex at the edges, so returning this absurd value
     endif
 
   
