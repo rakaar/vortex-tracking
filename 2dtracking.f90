@@ -27,12 +27,12 @@ integer:: filen,jj
 Nx = 256
 Ny = 256
 
-filen = 1
+filen = 5
 
 allocate(psi(1:Nx,1:Ny))
 
 
-do ifile=1,filen
+do ifile=filen,filen
     write(fnn,'(i8)') ifile
     write(*,*) "fnn is ",fnn
 
@@ -67,8 +67,8 @@ write(*,*) "####################################################################
 
 
 ! choose a random point
-x_guess = 200
-y_guess =  200
+x_guess = 106
+y_guess = 66
 
 h = 1
 

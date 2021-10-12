@@ -77,14 +77,14 @@ dy = lengthy/Ny
 nsplit_orignal = 4
 nsplit_current = 1 
 myrank = 0
-filen = 1
+filen = 2
 
 ALLOCATE(psi(1:Nx,1:Ny))
 ALLOCATE(rho(1:Nx,1:Ny))
 
 
 
-DO ifile=1,filen
+DO ifile=filen,filen
 
 WRITE(fnn,'(i8)') ifile
 write(*,*) "fnn is ",fnn
@@ -134,12 +134,12 @@ do index_i = 1,Nx
             phase_grad_floored = floor(phase_grad)
             integer_check_diff = phase_grad - phase_grad_floored
             if(integer_check_diff < 0.01 .OR. integer_check_diff > 0.99) then
-                write(*,*) "i, j", index_i, index_j
-                write(*,*) "psi^2",ABS(psi(index_i, index_j))**2
+                write(*,*) "[", index_i,",", index_j,"]",","
+                ! write(*,*) "psi^2",ABS(psi(index_i, index_j))**2
             
-                write(*, *) "this might be vortex"
-                write(*,*) "grad", phase_grad
-                write(*,*) "------------------------------"
+                ! write(*, *) "this might be vortex"
+                ! write(*,*) "grad", phase_grad
+                ! write(*,*) "------------------------------"
             endif
             
         endif
