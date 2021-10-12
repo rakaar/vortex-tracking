@@ -78,7 +78,7 @@ dy = lengthy/Ny
 nsplit_orignal = 4
 nsplit_current = 1 
 myrank = 0
-filen = 7
+filen = 2
 
 ALLOCATE(psi(1:Nx,1:Ny))
 ALLOCATE(rho(1:Nx,1:Ny))
@@ -219,8 +219,8 @@ real function find_phase_grad(x_cord, y_cord, complex_num)
     deno3 = find_mod_prod(x_cord, y_cord+1, x_cord-1, y_cord+1, complex_num)
     deno4 = find_mod_prod(x_cord-1, y_cord, x_cord-1, y_cord+1, complex_num)
     deno5 = find_mod_prod(x_cord-1, y_cord, x_cord-1, y_cord-1, complex_num)
-    deno6 = find_mod_prod(x_cord-1, y_cord-1, x_cord, y_cord+1, complex_num)
-    deno7 = find_mod_prod(x_cord, y_cord-1, x_cord+1, y_cord+1, complex_num)
+    deno6 = find_mod_prod(x_cord-1, y_cord-1, x_cord, y_cord-1, complex_num)
+    deno7 = find_mod_prod(x_cord, y_cord-1, x_cord+1, y_cord-1, complex_num)
     deno8 = find_mod_prod(x_cord+1, y_cord, x_cord+1, y_cord-1, complex_num)
 
 
@@ -229,8 +229,8 @@ real function find_phase_grad(x_cord, y_cord, complex_num)
                       acos(find_angle_numerator(x_cord, y_cord+1, x_cord-1, y_cord+1, complex_num)/deno3)+&
                       acos(find_angle_numerator(x_cord-1, y_cord, x_cord-1, y_cord+1, complex_num)/deno4)+&
                       acos(find_angle_numerator(x_cord-1, y_cord, x_cord-1, y_cord-1, complex_num)/deno5)+&
-                      acos(find_angle_numerator(x_cord-1, y_cord-1, x_cord, y_cord+1, complex_num)/deno6)+&
-                      acos(find_angle_numerator(x_cord, y_cord-1, x_cord+1, y_cord+1, complex_num)/deno7)+&
+                      acos(find_angle_numerator(x_cord-1, y_cord-1, x_cord, y_cord-1, complex_num)/deno6)+&
+                      acos(find_angle_numerator(x_cord, y_cord-1, x_cord+1, y_cord-1, complex_num)/deno7)+&
                       acos(find_angle_numerator(x_cord+1, y_cord, x_cord+1, y_cord-1, complex_num)/deno8)
 
 
