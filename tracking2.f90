@@ -192,6 +192,7 @@ real function find_phase_grad(x_cord, y_cord, complex_num)
     endif
 
   
+    ! - WRONG
     ! find_phase_grad =  atan(psi_part(x_cord+1,y_cord,complex_num,2)/psi_part(x_cord+1,y_cord,complex_num,1)) + &
     !               atan(psi_part(x_cord+1,y_cord+1,complex_num,2)/psi_part(x_cord+1,y_cord+1,complex_num,1)) + &
     !               atan(psi_part(x_cord,y_cord+1,complex_num,2)/psi_part(x_cord,y_cord+1,complex_num,1)) + &
@@ -200,19 +201,7 @@ real function find_phase_grad(x_cord, y_cord, complex_num)
     !               atan(psi_part(x_cord-1,y_cord-1,complex_num,2)/psi_part(x_cord-1,y_cord-1,complex_num,1)) + &
     !               atan(psi_part(x_cord,y_cord-1,complex_num,2)/psi_part(x_cord,y_cord-1,complex_num,1)) + &
     !               atan(psi_part(x_cord+1,y_cord-1,complex_num,2)/psi_part(x_cord+1,y_cord-1,complex_num,1))
-
-    ! num =  psi_part(x_cord+1, y_cord-1, complex_num, 1)*psi_part(x_cord+1, y_cord, complex_num, 1)  + psi_part(x_cord+1, y_cord-1, complex_num, 2)*psi_part(x_cord+1, y_cord, complex_num, 2)
-
-    ! deno = ((psi_part(x_cord+1, y_cord-1, complex_num, 1)**2 + psi_part(x_cord+1, y_cord-1, complex_num, 2)**2)**0.5) * ((psi_part(x_cord+1, y_cord, complex_num, 1)**2 + psi_part(x_cord+1, y_cord, complex_num, 2)**2)**0.5)
-
-    ! find_phase_grad =   acos((psi_part(x_cord+1, y_cord, complex_num, 1)*psi_part(x_cord+1, y_cord+1, complex_num, 1)  + psi_part(x_cord+1, y_cord, complex_num, 2)*psi_part(x_cord+1, y_cord+1, complex_num, 2))/(((psi_part(x_cord+1, y_cord, complex_num, 1)**2 + psi_part(x_cord+1, y_cord, complex_num, 2)**2)**0.5) * ((psi_part(x_cord+1, y_cord+1, complex_num, 1)**2 + psi_part(x_cord+1, y_cord+1, complex_num, 2)**2)**0.5)))) 
-                        ! acos((psi_part(x_cord+1, y_cord+1, complex_num, 1)*psi_part(x_cord, y_cord+1, complex_num, 1)  + psi_part(x_cord+1, y_cord+1, complex_num, 2)*psi_part(x_cord, y_cord+1, complex_num, 2))/(((psi_part(x_cord+1, y_cord+1, complex_num, 1)**2 + psi_part(x_cord+1, y_cord+1, complex_num, 2)**2)**0.5) * ((psi_part(x_cord, y_cord+1, complex_num, 1)**2 + psi_part(x_cord, y_cord+1, complex_num, 2)**2)**0.5))) + &
-                        ! acos((psi_part(x_cord, y_cord+1, complex_num, 1)*psi_part(x_cord-1, y_cord+1, complex_num, 1)  + psi_part(x_cord, y_cord+1, complex_num, 2)*psi_part(x_cord-1, y_cord+1, complex_num, 2))/(((psi_part(x_cord, y_cord+1, complex_num, 1)**2 + psi_part(x_cord, y_cord+1, complex_num, 2)**2)**0.5) * ((psi_part(x_cord-1, y_cord+1, complex_num, 1)**2 + psi_part(x_cord-1, y_cord+1, complex_num, 2)**2)**0.5))) + &
-                        ! acos((psi_part(x_cord-1, y_cord+1, complex_num, 1)*psi_part(x_cord-1, y_cord, complex_num, 1)  + psi_part(x_cord-1, y_cord+1, complex_num, 2)*psi_part(x_cord-1, y_cord, complex_num, 2))/(((psi_part(x_cord-1, y_cord+1, complex_num, 1)**2 + psi_part(x_cord-1, y_cord+1, complex_num, 2)**2)**0.5) * ((psi_part(x_cord-1, y_cord, complex_num, 1)**2 + psi_part(x_cord-1, y_cord, complex_num, 2)**2)**0.5))) + &
-                        ! acos((psi_part(x_cord-1, y_cord, complex_num, 1)*psi_part(x_cord-1, y_cord-1, complex_num, 1)  + psi_part(x_cord-1, y_cord, complex_num, 2)*psi_part(x_cord-1, y_cord-1, complex_num, 2))/(((psi_part(x_cord-1, y_cord, complex_num, 1)**2 + psi_part(x_cord-1, y_cord, complex_num, 2)**2)**0.5) * ((psi_part(x_cord-1, y_cord-1, complex_num, 1)**2 + psi_part(x_cord-1, y_cord-1, complex_num, 2)**2)**0.5))) + &
-                        ! acos((psi_part(x_cord-1, y_cord-1, complex_num, 1)*psi_part(x_cord, y_cord-1, complex_num, 1)  + psi_part(x_cord-1, y_cord-1, complex_num, 2)*psi_part(x_cord, y_cord-1, complex_num, 2))/(((psi_part(x_cord-1, y_cord-1, complex_num, 1)**2 + psi_part(x_cord-1, y_cord-1, complex_num, 2)**2)**0.5) * ((psi_part(x_cord, y_cord-1, complex_num, 1)**2 + psi_part(x_cord, y_cord-1, complex_num, 2)**2)**0.5))) + &
-                        ! acos((psi_part(x_cord, y_cord-1, complex_num, 1)*psi_part(x_cord+1, y_cord-1, complex_num, 1)  + psi_part(x_cord, y_cord-1, complex_num, 2)*psi_part(x_cord+1, y_cord-1, complex_num, 2))/(((psi_part(x_cord, y_cord-1, complex_num, 1)**2 + psi_part(x_cord, y_cord-1, complex_num, 2)**2)**0.5) * ((psi_part(x_cord+1, y_cord-1, complex_num, 1)**2 + psi_part(x_cord+1, y_cord-1, complex_num, 2)**2)**0.5))) + &
-                        ! acos((psi_part(x_cord+1, y_cord-1, complex_num, 1)*psi_part(x_cord+1, y_cord, complex_num, 1)  + psi_part(x_cord+1, y_cord-1, complex_num, 2)*psi_part(x_cord+1, y_cord, complex_num, 2))/(((psi_part(x_cord+1, y_cord-1, complex_num, 1)**2 + psi_part(x_cord+1, y_cord-1, complex_num, 2)**2)**0.5) * ((psi_part(x_cord+1, y_cord, complex_num, 1)**2 + psi_part(x_cord+1, y_cord, complex_num, 2)**2)**0.5)))
+    ! - End of WRONG
 
     deno1 = find_mod_prod(x_cord+1, y_cord, x_cord+1, y_cord+1, complex_num)
     deno2 = find_mod_prod(x_cord+1, y_cord+1, x_cord, y_cord+1, complex_num)
@@ -237,7 +226,7 @@ real function find_phase_grad(x_cord, y_cord, complex_num)
 
 
 
-        ! find_phase_grad = acos()  
+         
 
 end function find_phase_grad
 
