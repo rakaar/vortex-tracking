@@ -203,26 +203,24 @@ real function find_phase_grad(x_cord, y_cord, complex_num)
     !               atan(psi_part(x_cord+1,y_cord-1,complex_num,2)/psi_part(x_cord+1,y_cord-1,complex_num,1))
     ! - End of WRONG
 
-    deno1 = find_mod_prod(x_cord+1, y_cord, x_cord+1, y_cord+1, complex_num)
-    deno2 = find_mod_prod(x_cord+1, y_cord+1, x_cord, y_cord+1, complex_num)
-    deno3 = find_mod_prod(x_cord, y_cord+1, x_cord-1, y_cord+1, complex_num)
-    deno4 = find_mod_prod(x_cord-1, y_cord, x_cord-1, y_cord+1, complex_num)
-    deno5 = find_mod_prod(x_cord-1, y_cord, x_cord-1, y_cord-1, complex_num)
-    deno6 = find_mod_prod(x_cord-1, y_cord-1, x_cord, y_cord-1, complex_num)
-    deno7 = find_mod_prod(x_cord, y_cord-1, x_cord+1, y_cord-1, complex_num)
-    deno8 = find_mod_prod(x_cord+1, y_cord, x_cord+1, y_cord-1, complex_num)
+  deno1 = find_mod_prod(x_cord+1, y_cord, x_cord+1, y_cord-1, complex_num)
+    deno2 = find_mod_prod(x_cord+1,y_cord-1, x_cord, y_cord-1, complex_num)
+    deno3 = find_mod_prod(x_cord, y_cord-1,x_cord-1, y_cord-1, complex_num)
+    deno4 = find_mod_prod(x_cord-1,y_cord-1,x_cord-1,y_cord, complex_num)
+    deno5 = find_mod_prod(x_cord-1,y_cord,x_cord-1,y_cord+1, complex_num)
+    deno6 = find_mod_prod(x_cord-1,y_cord+1,x_cord,y_cord+1, complex_num)
+    deno7 = find_mod_prod(x_cord,y_cord+1,x_cord+1,y_cord+1, complex_num)
+    deno8 = find_mod_prod(x_cord+1,y_cord+1,x_cord+1,y_cord, complex_num)
 
 
-    find_phase_grad = acos(find_angle_numerator(x_cord+1, y_cord, x_cord+1, y_cord+1, complex_num)/deno1)+&
-                      acos(find_angle_numerator(x_cord+1, y_cord+1, x_cord, y_cord+1, complex_num)/deno2)+&
-                      acos(find_angle_numerator(x_cord, y_cord+1, x_cord-1, y_cord+1, complex_num)/deno3)+&
-                      acos(find_angle_numerator(x_cord-1, y_cord, x_cord-1, y_cord+1, complex_num)/deno4)+&
-                      acos(find_angle_numerator(x_cord-1, y_cord, x_cord-1, y_cord-1, complex_num)/deno5)+&
-                      acos(find_angle_numerator(x_cord-1, y_cord-1, x_cord, y_cord-1, complex_num)/deno6)+&
-                      acos(find_angle_numerator(x_cord, y_cord-1, x_cord+1, y_cord-1, complex_num)/deno7)+&
-                      acos(find_angle_numerator(x_cord+1, y_cord, x_cord+1, y_cord-1, complex_num)/deno8)
-
-
+    find_phase_grad = acos(find_angle_numerator(x_cord+1, y_cord, x_cord+1, y_cord-1, complex_num)/deno1)+&
+                      acos(find_angle_numerator(x_cord+1,y_cord-1, x_cord, y_cord-1, complex_num)/deno2)+&
+                      acos(find_angle_numerator(x_cord, y_cord-1,x_cord-1, y_cord-1, complex_num)/deno3)+&
+                      acos(find_angle_numerator(x_cord-1,y_cord-1,x_cord-1,y_cord, complex_num)/deno4)+&
+                      acos(find_angle_numerator(x_cord-1,y_cord,x_cord-1,y_cord+1,complex_num)/deno5)+&
+                      acos(find_angle_numerator(x_cord-1,y_cord+1,x_cord,y_cord+1,complex_num)/deno6)+&
+                      acos(find_angle_numerator(x_cord,y_cord+1,x_cord+1,y_cord+1,complex_num)/deno7)+&
+                      acos(find_angle_numerator(x_cord+1,y_cord+1,x_cord+1,y_cord,complex_num)/deno8)
 
 
 
