@@ -131,7 +131,7 @@ do index_i = 1,Nx
         if(ABS(psi(index_i, index_j))**2 - max_psi_square*threshold < 0) then
             
             ! check if phase grad is integer or not
-            phase_grad = find_phase_grad(index_i, index_j, psi)/6.28318531 ! divide by pi to check whether its integral multiples of pi or not
+            phase_grad = find_phase_grad(index_i, index_j, psi)/6.28318531 ! divide by 2 pi to check whether its integral multiples of pi or not
             phase_grad_floored = floor(phase_grad)
             integer_check_diff = phase_grad - phase_grad_floored
             if(integer_check_diff < 0.01 .OR. integer_check_diff > 0.99) then
@@ -164,7 +164,6 @@ real function find_angle_numerator(x1, y1, x2, y2, complex_num)
     b =  psi_part(x1,y1,complex_num,2) * psi_part(x2,y2,complex_num,2)
 
     find_angle_numerator = a + b
-    ! find_angle_numerator = 2+3
 end function find_angle_numerator
 
 real function find_mod_prod(x1, y1, x2, y2, complex_num)
